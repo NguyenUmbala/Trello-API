@@ -35,8 +35,6 @@ func AllCardReview(c *gin.Context) {
 }
 
 func AllCardChangedDueDate(c *gin.Context) {
-	database.OpenConnection()
-	defer database.CloseConnection()
 	idBoard := c.Param("id")
 	cardsOnBoard, err := Consumer.GetCardsOnBoard(idBoard)
 	if err != nil {
@@ -74,10 +72,6 @@ func CheckChangeDue(cardsBoard *trello.Card, cardsDB database.DBCard) bool {
 
 // Bước tiền đề cho API. Lưu tất cả card để có data mới kiểm tra sự thay đổi ngày hết hạn của các card được
 func SaveCardsOnDB(c *gin.Context) {
-	database.OpenConnection()
-	database.AutoMigrate()
-	defer database.CloseConnection()
-
 	idBoard := c.Param("id")
 
 	cardsOnBoard, err := Consumer.GetCardsOnBoard(idBoard)
@@ -107,9 +101,6 @@ func SaveCardsOnDB(c *gin.Context) {
 }
 
 func UpdateCards(c *gin.Context) {
-	database.OpenConnection()
-	defer database.CloseConnection()
-
 	idBoard := c.Param("id")
 	cardsOnBoard, err := Consumer.GetCardsOnBoard(idBoard)
 	if err != nil {

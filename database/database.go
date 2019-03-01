@@ -15,12 +15,16 @@ type DBCard struct {
 var db *gorm.DB
 
 func SaveCard(card DBCard) {
+	OpenConnection()
+	defer CloseConnection()
 	if db.NewRecord(card) {
 		db.Create(&card)
 	}
 }
 
 func GetCards() []DBCard {
+	OpenConnection()
+	defer CloseConnection()
 	var cards []DBCard
 	db.Find(&cards)
 
@@ -28,6 +32,8 @@ func GetCards() []DBCard {
 }
 
 func UpdateCard(card DBCard) {
+	OpenConnection()
+	defer CloseConnection()
 	var newCard DBCard
 	db.Where("id_card = ?", card.IDCard).First(&newCard)
 
@@ -46,6 +52,8 @@ func OpenConnection() {
 	if err != nil {
 		// Handle error
 	}
+
+	db.AutoMigrate(&DBCard{})
 }
 func AutoMigrate() {
 	db.AutoMigrate(&DBCard{})
